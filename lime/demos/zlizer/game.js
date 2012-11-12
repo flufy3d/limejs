@@ -27,8 +27,8 @@ zlizer.Game = function(level) {
 
     this.level = level;
     this.magic = 6 + Math.round(((level - 1) / 20) * (15 - 6));
-    zlizer.RELOAD_TIME = 6800 - level * 120;
-    zlizer.BUBBLE_SPEED = 75 + this.level * 1.4;
+    zlizer.RELOAD_TIME = 1800 - level * 120;
+    zlizer.BUBBLE_SPEED = 1175 + this.level * 1.4;
 
 
     this.mask = new lime.Sprite().setFill(new lime.fill.LinearGradient().addColorStop(0, 0, 0, 0, 0).addColorStop(.95, 0, 0, 0, .1).addColorStop(1, 0, 0, 0, .0)).setSize(768, 760).setAnchorPoint(0, 0).setPosition(0, 130);
@@ -326,7 +326,9 @@ zlizer.Game.prototype.startup = function() {
     var box = zlizer.dialogs.box1();
     this.cover.appendChild(box);
     var that = this;
-
+    that.cover.removeChild(title);
+    that.start();
+    return;
     goog.events.listen(show, lime.animation.Event.STOP, function() {
         zlizer.dialogs.appear(box);
 
