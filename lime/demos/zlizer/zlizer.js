@@ -6,6 +6,7 @@ goog.provide('zlizer');
 goog.require('lime.Circle');
 goog.require('lime.Director');
 goog.require('lime.Label');
+goog.require('lime.LabelInput')
 goog.require('lime.Layer');
 goog.require('lime.Scene');
 goog.require('lime.animation.FadeTo');
@@ -56,6 +57,9 @@ zlizer.loadMenuScene = function(opt_transition) {
     layer.appendChild(contents);
 
     contents.setMask(mask);
+
+    var test_label_input = new lime.LabelInput('input some').setPosition(0,220).setSize(250, 50);
+    contents.appendChild(test_label_input);
 
     var btn_play = new zlizer.Button('PLAY NOW').setPosition(0, 330).setSize(250, 100);
     contents.appendChild(btn_play);
