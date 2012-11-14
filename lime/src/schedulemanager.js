@@ -20,13 +20,6 @@ lime.scheduleManager = new (function() {
      */
     this.taskStack_ = [];
 
-        /**
-     * Array of task that need to remove
-     * @type {Array.<lime.scheduleManager.Task>}
-     * @private
-     */
-    this.delTaskList_ = [];
-
     /**
      * ScheduleManager is active
      * @type {boolean}
@@ -172,8 +165,7 @@ lime.scheduleManager.unschedule = function(f, context) {
             }
         }
         if (functionStack_.length == 0 && j != 0) {
-           //goog.array.remove(this.taskStack_, task);
-           goog.array.insert(this.delTaskList_, task);
+           goog.array.remove(this.taskStack_, task);
         }
     }
     // if no more functions: stop timers
@@ -310,20 +302,10 @@ lime.scheduleManager.stepTimer_ = function() {
  */
 lime.scheduleManager.dispatch_ = function(delta){
 
-    goog.array.forEach(this.delTaskList_,function(s)
-    {
-        goog.array.remove(this.taskStack_, s);
-    },this);
-    goog.array.clear(this.delTaskList_);
 
-    var i = this.taskStack_.length;
-
-    while (--i >= 0) {
-        //if (this.taskStack_[i] != null) {
-            this.taskStack_[i].step_(delta);
-        //};
-        
-    }
+    var stack = this.taskStack_.slice()
+    var i = stack.length;
+    while (--i >= 0) stack[i].step_(delta);
     //hack to deal with FF4 CSS transformation issue https://bugzilla.mozilla.org/show_bug.cgi?id=637597
     if(lime.transformSet_ == 1 && (/Firefox\/4./).test(goog.userAgent.getUserAgentString()) &&
        !lime.FF4_USE_HW_ACCELERATION){
